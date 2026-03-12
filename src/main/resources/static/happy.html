@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chúc một ngày vui vẻ!</title>
+  <style>
+    :root{
+      --bg1: #ffecd2;
+      --bg2: #fcb69f;
+      --accent: #ff6b6b;
+      --card: rgba(255,255,255,0.9);
+      --text: #333;
+    }
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      background: linear-gradient(135deg,var(--bg1),var(--bg2));
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+    .center{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+    }
+    .card{
+      background:var(--card);
+      border-radius:18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+      padding:28px;
+      max-width:920px;
+      width:100%;
+      display:flex;
+      gap:24px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .left{
+      flex:1 1 320px;
+    }
+    .title{
+      font-size:clamp(20px,4vw,34px);
+      margin:0 0 12px 0;
+      color: #2b2b2b;
+    }
+    .desc{
+      margin:0 0 18px 0;
+      line-height:1.4;
+      color:#444;
+    }
+    .btn{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      background:linear-gradient(90deg,#ffd56b,#ff9a9e);
+      border:none;
+      color:#3a2a1f;
+      padding:12px 18px;
+      border-radius:12px;
+      cursor:pointer;
+      font-weight:600;
+      box-shadow:0 6px 18px rgba(255,150,120,0.28);
+      transition:transform .15s ease, box-shadow .15s ease;
+      text-decoration:none;
+    }
+    .btn:active{transform:translateY(1px)}
+    .right{
+      flex:0 0 220px;
+      text-align:center;
+    }
+    .face{
+      width:140px;height:140px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff 0,#ffd56b 10%, #ff9a9e 60%);display:inline-block;box-shadow:0 8px 24px rgba(0,0,0,0.12);position:relative;overflow:hidden
+    }
+    .eyes{position:absolute;left:50%;top:42%;transform:translateX(-50%);display:flex;gap:22px}
+    .eye{width:18px;height:18px;background:#2b2b2b;border-radius:50%}
+    .mouth{position:absolute;left:50%;bottom:28px;transform:translateX(-50%);width:70px;height:36px;border-bottom-left-radius:40px;border-bottom-right-radius:40px;background:transparent;box-sizing:border-box;border:6px solid #2b2b2b;border-top:0}
+
+    /* confetti */
+    .confetti {position:fixed;left:0;top:0;right:0;bottom:0;pointer-events:none;overflow:hidden;}
+    .confetti i{position:absolute;width:10px;height:14px;background:var(--accent);opacity:0.9;transform-origin:center;animation:fall linear forwards}
+
+    @keyframes fall{
+      to {transform: translateY(110vh) rotate(360deg);opacity:0}
+    }
+
+    /* responsive */
+    @media (max-width:640px){
+      .card{padding:20px}
+      .right{flex-basis:100%}
+      .face{width:110px;height:110px}
+    }
+  </style>
+</head>
+<body>
+  <div class="center">
+    <div class="card">
+      <div class="left">
+        <h1 class="title">Chúc bạn một ngày thật vui vẻ!</h1>
+        <p class="desc">Nhấn nút dưới đây để nhận một lời chúc vui vẻ và một chút bất ngờ — chúc bạn ngày hôm nay đầy màu sắc & nụ cười. Share cho bạn bè nếu bạn muốn lan tỏa niềm vui!</p>
+        <button id="happyBtn" class="btn" aria-live="polite">🎉 Nhấn để nhận lời chúc</button>
+      </div>
+      <div class="right">
+        <div class="face" aria-hidden="true">
+          <div class="eyes">
+            <div class="eye"></div>
+            <div class="eye"></div>
+          </div>
+          <div class="mouth"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="confetti" id="confetti"></div>
+
+  <script>
+    // Simple confetti emitter
+    function emitConfetti(count) {
+      const container = document.getElementById('confetti');
+      const colors = ['#ff6b6b','#ffd56b','#6be7ff','#7dffb2','#b58bff'];
+      for (let i=0;i<count;i++){
+        const el = document.createElement('i');
+        el.style.left = Math.random()*100 + '%';
+        el.style.top = (-10 - Math.random()*20) + 'vh';
+        el.style.background = colors[Math.floor(Math.random()*colors.length)];
+        el.style.width = (8 + Math.random()*10) + 'px';
+        el.style.height = (10 + Math.random()*12) + 'px';
+        el.style.transform = 'translateY(0) rotate(' + (Math.random()*360) + 'deg)';
+        el.style.animationDuration = (2 + Math.random()*1.5) + 's';
+        el.style.opacity = 0.95;
+        container.appendChild(el);
+        // remove after animation
+        setTimeout(()=>{ el.remove(); }, 3500);
+      }
+    }
+
+    const btn = document.getElementById('happyBtn');
+    btn.addEventListener('click', ()=>{
+      emitConfetti(40);
+      // accessibility: create polite announcement
+      btn.setAttribute('aria-pressed','true');
+      const msg = document.createElement('div');
+      msg.style.position='fixed';msg.style.left='-9999px';
+      msg.setAttribute('aria-hidden','false');
+      msg.textContent = 'Chúc bạn một ngày vui vẻ!';
+      document.body.appendChild(msg);
+      setTimeout(()=> msg.remove(), 2000);
+      // show a friendly toast
+      showToast('Chúc bạn một ngày vui vẻ! 🌈');
+    });
+
+    function showToast(text){
+      const t = document.createElement('div');
+      t.textContent = text;
+      t.style.position='fixed';t.style.bottom='24px';t.style.left='50%';t.style.transform='translateX(-50%)';
+      t.style.background='rgba(255,255,255,0.95)';t.style.padding='12px 18px';t.style.borderRadius='12px';
+      t.style.boxShadow='0 8px 24px rgba(0,0,0,0.12)';t.style.fontWeight='600';
+      document.body.appendChild(t);
+      setTimeout(()=>{ t.style.transition='opacity 300ms'; t.style.opacity='0'; setTimeout(()=>t.remove(),300); },2500);
+    }
+
+    // gentle idle animation
+    setInterval(()=>{
+      const eyes = document.querySelectorAll('.eye');
+      eyes.forEach((e,i)=>{
+        e.animate([{transform:'translateY(0)'},{transform:'translateY(3px)'},{transform:'translateY(0)'}],{duration:2000+Math.random()*2000,iterations:1});
+      })
+    },4000);
+
+    // Auto adjust confetti count for small screens
+    window.addEventListener('resize', ()=>{});
+  </script>
+</body>
+</html>
+
