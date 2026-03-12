@@ -17,7 +17,7 @@ public class HelloController {
 
     @GetMapping(path = "/api/hello", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Map<String, String>> apiHello() {
-        return ResponseEntity.ok(Map.of("message", "Hello my friends"));
+        return ResponseEntity.ok(Map.of("message", "Hello my friends, my name is Hoài"));
     }
 }
 
