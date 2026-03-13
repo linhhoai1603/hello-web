@@ -100,7 +100,6 @@
   </div>
 
   <div class="confetti" id="confetti"></div>
-
   <!-- modal shown when user clicks Có -->
   <div id="modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="modal">
@@ -224,6 +223,66 @@
       setTimeout(()=>{ row.style.transition='opacity 300ms, transform 400ms'; row.style.opacity=1; row.style.transform='translateY(0)'; },120);
     });
 
+  </script>
+</body>
+</html>
+=======
+  <script>
+    // Simple confetti emitter
+    function emitConfetti(count) {
+      const container = document.getElementById('confetti');
+      const colors = ['#ff6b6b','#ffd56b','#6be7ff','#7dffb2','#b58bff'];
+      for (let i=0;i<count;i++){
+        const el = document.createElement('i');
+        el.style.left = Math.random()*100 + '%';
+        el.style.top = (-10 - Math.random()*20) + 'vh';
+        el.style.background = colors[Math.floor(Math.random()*colors.length)];
+        el.style.width = (8 + Math.random()*10) + 'px';
+        el.style.height = (10 + Math.random()*12) + 'px';
+        el.style.transform = 'translateY(0) rotate(' + (Math.random()*360) + 'deg)';
+        el.style.animationDuration = (2 + Math.random()*1.5) + 's';
+        el.style.opacity = 0.95;
+        container.appendChild(el);
+        // remove after animation
+        setTimeout(()=>{ el.remove(); }, 3500);
+      }
+    }
+
+    const btn = document.getElementById('happyBtn');
+    btn.addEventListener('click', ()=>{
+      emitConfetti(40);
+      // accessibility: create polite announcement
+      btn.setAttribute('aria-pressed','true');
+      const msg = document.createElement('div');
+      msg.style.position='fixed';msg.style.left='-9999px';
+      msg.setAttribute('aria-hidden','false');
+      msg.textContent = 'Chúc bạn một ngày vui vẻ!';
+      document.body.appendChild(msg);
+      setTimeout(()=> msg.remove(), 2000);
+      // show a friendly toast
+      showToast('Chúc bạn một ngày vui vẻ! 🌈');
+    });
+
+    function showToast(text){
+      const t = document.createElement('div');
+      t.textContent = text;
+      t.style.position='fixed';t.style.bottom='24px';t.style.left='50%';t.style.transform='translateX(-50%)';
+      t.style.background='rgba(255,255,255,0.95)';t.style.padding='12px 18px';t.style.borderRadius='12px';
+      t.style.boxShadow='0 8px 24px rgba(0,0,0,0.12)';t.style.fontWeight='600';
+      document.body.appendChild(t);
+      setTimeout(()=>{ t.style.transition='opacity 300ms'; t.style.opacity='0'; setTimeout(()=>t.remove(),300); },2500);
+    }
+
+    // gentle idle animation
+    setInterval(()=>{
+      const eyes = document.querySelectorAll('.eye');
+      eyes.forEach((e,i)=>{
+        e.animate([{transform:'translateY(0)'},{transform:'translateY(3px)'},{transform:'translateY(0)'}],{duration:2000+Math.random()*2000,iterations:1});
+      })
+    },4000);
+
+    // Auto adjust confetti count for small screens
+    window.addEventListener('resize', ()=>{});
   </script>
 </body>
 </html>
